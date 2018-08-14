@@ -44,8 +44,9 @@ ol,
 ul,
 p {
   font-family: $font-family-sub;
-  font-size: 1rem;
+  font-size: 1.25rem; /* change Garamond font size here */
   line-height: 1.66;
+  font-weight: $font-weight-sub-normal
 }
 
 blockquote p {

@@ -4,6 +4,7 @@
 * @author Masha Safina <safe@masha.space> (http://masha.space/)
 * @link https://github.com/mashlo/captains-log
 */
+/* change fontstyle here*/
 html,
 body,
 div,
@@ -84,9 +85,11 @@ a {
 ol,
 ul,
 p {
-  font-family: "Droid Serif", serif;
-  font-size: 1rem;
-  line-height: 1.66; }
+  font-family: "Garamond", serif;
+  font-size: 1.25rem;
+  /* change Garamond font size here */
+  line-height: 1.66;
+  font-weight: 400; }
 
 blockquote p {
   font-family: "Open Sans", Helvetica, Arial, sans-serif;
@@ -97,7 +100,7 @@ hr {
   height: 1px;
   border: none;
   margin: 3em auto 1.5em;
-  background: #eeeeee; }
+  background: white; }
 
 html {
   font-size: 18px; }
@@ -239,7 +242,7 @@ pre {
   z-index: 2; }
   .site-footer .wrapper {
     padding: 2em 0 4em;
-    border-top: 1px solid #eeeeee; }
+    border-top: 1px solid white; }
 
 .social-media-list {
   font-family: "Open Sans", Helvetica, Arial, sans-serif;
@@ -253,7 +256,7 @@ pre {
       box-shadow: none; }
 
 .footer-col-wrapper {
-  color: #bbb; }
+  color: #ccc; }
 
 .footer-col {
   float: left;
@@ -303,7 +306,7 @@ pre {
   padding-top: 1em;
   margin: 0 0 0.5em; }
 .post-content h3 {
-  color: #bbb;
+  color: #ccc;
   font-weight: 600; }
 
 .post-list {
@@ -318,7 +321,7 @@ pre {
   margin: 5px 0 0;
   font-family: "Open Sans", Helvetica, Arial, sans-serif;
   font-size: 0.85rem;
-  color: #bbb; }
+  color: #ccc; }
 
 .post-link {
   display: inline; }
