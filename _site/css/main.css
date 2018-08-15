@@ -107,7 +107,7 @@ html {
 
 /* Basic styling */
 body {
-  color: #383838;
+  color: black;
   background-color: #fff; }
 
 /* Selection styling */
@@ -161,7 +161,7 @@ p a {
 
 /* Blockquotes */
 blockquote {
-  color: #383838;
+  color: black;
   font-size: 1.44rem;
   font-weight: 400;
   border-left: 4px solid #fec923;
