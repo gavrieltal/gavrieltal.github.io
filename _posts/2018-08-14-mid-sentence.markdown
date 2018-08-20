@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Naive Mid-Sentence Processing"
-date:   2018-08-14 17:00:00 -0400
+date:   2018-08-19 22:00:00 -0400
 ---
 
 ![Demonstration of Naive Mid-Sentence Processing](/assets/mid-sentence.gif)
