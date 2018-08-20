@@ -1,0 +1,14 @@
+# Site settings
+title:       Gavriel's Notebook
+author:      Gavriel Loria
+description: ""
+baseurl:     "" 
+url:         "https://gavrieltal.github.io" 
+
+# Social Links
+email:            gtloria@protonmail.com
+github_username:  gavrieltal
+
+# Build settings
+markdown: kramdown
+permalink: pretty

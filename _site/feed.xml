@@ -5,19 +5,90 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 14 Aug 2018 20:19:47 -0400</pubDate>
-    <lastBuildDate>Tue, 14 Aug 2018 20:19:47 -0400</lastBuildDate>
+    <pubDate>Sun, 19 Aug 2018 21:46:44 -0400</pubDate>
+    <lastBuildDate>Sun, 19 Aug 2018 21:46:44 -0400</lastBuildDate>
     <generator>Jekyll v3.8.3</generator>
     
       <item>
-        <title>Woah</title>
-        <description>&lt;p&gt;I’m going to try writing something.&lt;/p&gt;
+        <title>Naive Mid-Sentence Processing</title>
+        <description>&lt;p&gt;&lt;img src=&quot;/assets/mid-sentence.gif&quot; alt=&quot;Demonstration of Naive Mid-Sentence Processing&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;This paragraph is in Garamond. Keep reading for how to use the buttons to the left. Change your settings, and choose what section you want the font to apply to. Once you are pleased with the settings for that section you can click save. Your selections will remain as you look for another font for another section of this preview.&lt;/p&gt;
+&lt;p&gt;The first program I ever tried to create was an original process for making sense of a sentence of natural language as it was being spoken or written. With just a year of computer science classes under my belt and some experience tutoring the same material, this project was ambitious enough that I was probably doomed to fail. However, I would learn a lot in the process, not only about programming and working in a group but also about what kinds of projects I would like to work on going forward.&lt;/p&gt;
+
+&lt;p&gt;The idea for the project came from the &lt;a href=&quot;https://opencog.org/&quot;&gt;OpenCog Foundation&lt;/a&gt;, who graciously offered to mentor me under the auspices of Google’s Summer of Code 2015. As they pointed out, there had already existed algorithms for producing syntactic parses of complete sentences, such as the &lt;a href=&quot;https://www.abisource.com/projects/link-grammar/&quot;&gt;Link Grammar Parser&lt;/a&gt;. What makes the Link Grammar Parser attractive to OpenCog, as Dr. Ben Goertzel once told me over Slack, is that the words have direct relations of dependency or hierarchy with one another, resulting in simpler parses (fewer nodes). In formal linguistic terminology, it is a syntax parser based on &lt;em&gt;dependency grammar&lt;/em&gt;, rather than the &lt;em&gt;phrase structure grammar&lt;/em&gt; that most K-12 grammar textbooks and linguists such as Noam Chomsky primarily worked with, wherein groupings of words serving a particular purpose in the sentence may also count as nodes in the parse.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/Thistreeisillustratingtherelation(PSG).png&quot; alt=&quot;An image showing the difference between dependency and phrase structure grammar parses of a sentence.&quot; title=&quot;By Tjo3ya - Own work, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=17527158&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;To see it work, you can parse a complete sentence &lt;a href=&quot;http://www.link.cs.cmu.edu/link/submit-sentence-4.html&quot;&gt;here&lt;/a&gt;. To understand what the relations in a given linkage mean, there is also a &lt;a href=&quot;https://www.abisource.com/projects/link-grammar/dict/index.html&quot;&gt;reference dictionary&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;In the hopes of developing an algorithm to predict syntactic parses mid-sentence on the basis of semantics, I spent the first half of my summer reading somewhat deeply into &lt;a href=&quot;http://dickhudson.com/word-grammar/&quot;&gt;Word Grammar&lt;/a&gt;, a linguistic system describing on a theoretical level the relationships of many kinds of linguistic terms with each other (including words, spellings, pronunciations, syntactic links, and semantic concepts). I also looked into tweaking the primary algorithm to prioritize checking linkages within a limited portion of a sentence, such as a phrase.&lt;/p&gt;
+
+&lt;p&gt;What I didn’t realize at the time was that the Link Grammar Parser is fast enough that it may have been first worth implementing a much simpler and more naive form of mid-sentence parsing – rerunning the parser for each input action. So, as a tribute to my as-of-yet failure to improve upon the mid-sentence processing problem, I’ve implemented a small ruby script for the command line that repeatedly runs the link grammar parser every time a character is entered or deleted.&lt;/p&gt;
+
+&lt;p&gt;To run this program on your own Mac or Linux terminal, you’ll need to install &lt;code class=&quot;highlighter-rouge&quot;&gt;ruby&lt;/code&gt;, the command line tool &lt;code class=&quot;highlighter-rouge&quot;&gt;gem&lt;/code&gt;, and the &lt;code class=&quot;highlighter-rouge&quot;&gt;linkparser&lt;/code&gt; gem. On Debian/Ubuntu/derivatives, that should look like:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo apt-get install ruby gem
+
+sudo gem install linkparser
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;To use sudo, you will need to enter your root-level password.&lt;/p&gt;
+
+&lt;p&gt;Then, you can use &lt;code class=&quot;highlighter-rouge&quot;&gt;git clone&lt;/code&gt; from my &lt;a href=&quot;&quot;&gt;Github Repository&lt;/a&gt; or copy the code below into a file, and run it like so, assuming the file’s name is &lt;em&gt;mid-sentence.rb&lt;/em&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ruby mid-sentence.rb
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Hit Escape to exit the program.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'io/console'&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;linkparser&quot;&lt;/span&gt;
+
+
+&lt;span class=&quot;n&quot;&gt;dict&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;LinkParser&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Dictionary&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;max_null_count: &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;shell_string&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;linkparser&amp;gt; &quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;user_string&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;num_linkages_to_show&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;type Esc to exit program.&quot;&lt;/span&gt;
+
+
+&lt;span class=&quot;kp&quot;&gt;loop&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;shell_string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user_string&lt;/span&gt;
+  
+  &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;STDIN&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;getch&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\u&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;007F&quot;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;user_string&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user_string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;...-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;elsif&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\e&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Exiting program...&quot;&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;user_string&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user_string&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user_string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;empty?&lt;/span&gt;    
+    &lt;span class=&quot;n&quot;&gt;parse&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dict&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;parse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user_string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;    
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;parse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;num_linkages_found&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;positive?&lt;/span&gt;
+      &lt;span class=&quot;nb&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;*&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;70&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;      
+      &lt;span class=&quot;n&quot;&gt;reversed&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;parse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;linkages&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;reverse&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;reversed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;num_linkages_to_show&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;link&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+        &lt;span class=&quot;nb&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;link&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;diagram&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;max_width: &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;200&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;      
+      &lt;span class=&quot;nb&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;parse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;num_linkages_found&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; linkages found. &quot;&lt;/span&gt;
+      &lt;span class=&quot;nb&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Best &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;num_linkages_to_show&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;parse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;num_linkages_found&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; &quot;&lt;/span&gt;
+      &lt;span class=&quot;nb&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;shown in reverse, with the best matches on bottom.&quot;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;    
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  
+  &lt;span class=&quot;nb&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
 </description>
         <pubDate>Tue, 14 Aug 2018 17:00:00 -0400</pubDate>
-        <link>http://localhost:4000/2018/08/14/woah/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/08/14/woah/</guid>
+        <link>http://localhost:4000/2018/08/14/link-grammar/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/08/14/link-grammar/</guid>
         
         
       </item>

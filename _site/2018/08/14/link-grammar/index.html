@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Naive Mid-Sentence Processing</title>
+  <meta name="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:600,700|Garamond:400,700' rel='stylesheet' type='text/css'>
+  
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://localhost:4000/2018/08/14/link-grammar/">
+  <link rel="alternate" type="application/rss+xml" title="Gavriel's Notebook" href="http://localhost:4000/feed.xml">
+</head>
+
+
+  <body>
+    <div class="site-wrap">
+      <header class="site-header">
+  <div class="wrapper">
+    <a class="site-title" href="http://localhost:4000/">Gavriel's Notebook</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+
+      </div>
+    </nav>
+  </div>
+</header>
+
+
+      <div class="page-content">
+        <div class="wrapper">
+          <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Naive Mid-Sentence Processing</h1>
+    <p class="post-meta"><time datetime="2018-08-14T17:00:00-04:00" itemprop="datePublished">August 14, 2018</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p><img src="/assets/mid-sentence.gif" alt="Demonstration of Naive Mid-Sentence Processing" /></p>
+
+<p>The first program I ever tried to create was an original process for making sense of a sentence of natural language as it was being spoken or written. With just a year of computer science classes under my belt and some experience tutoring the same material, this project was ambitious enough that I was probably doomed to fail. However, I would learn a lot in the process, not only about programming and working in a group but also about what kinds of projects I would like to work on going forward.</p>
+
+<p>The idea for the project came from the <a href="https://opencog.org/">OpenCog Foundation</a>, who graciously offered to mentor me under the auspices of Google’s Summer of Code 2015. As they pointed out, there had already existed algorithms for producing syntactic parses of complete sentences, such as the <a href="https://www.abisource.com/projects/link-grammar/">Link Grammar Parser</a>. What makes the Link Grammar Parser attractive to OpenCog, as Dr. Ben Goertzel once told me over Slack, is that the words have direct relations of dependency or hierarchy with one another, resulting in simpler parses (fewer nodes). In formal linguistic terminology, it is a syntax parser based on <em>dependency grammar</em>, rather than the <em>phrase structure grammar</em> that most K-12 grammar textbooks and linguists such as Noam Chomsky primarily worked with, wherein groupings of words serving a particular purpose in the sentence may also count as nodes in the parse.</p>
+
+<p><img src="/assets/Thistreeisillustratingtherelation(PSG).png" alt="An image showing the difference between dependency and phrase structure grammar parses of a sentence." title="By Tjo3ya - Own work, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=17527158" /></p>
+
+<p>To see it work, you can parse a complete sentence <a href="http://www.link.cs.cmu.edu/link/submit-sentence-4.html">here</a>. To understand what the relations in a given linkage mean, there is also a <a href="https://www.abisource.com/projects/link-grammar/dict/index.html">reference dictionary</a>.</p>
+
+<p>In the hopes of developing an algorithm to predict syntactic parses mid-sentence on the basis of semantics, I spent the first half of my summer reading somewhat deeply into <a href="http://dickhudson.com/word-grammar/">Word Grammar</a>, a linguistic system describing on a theoretical level the relationships of many kinds of linguistic terms with each other (including words, spellings, pronunciations, syntactic links, and semantic concepts). I also looked into tweaking the primary algorithm to prioritize checking linkages within a limited portion of a sentence, such as a phrase.</p>
+
+<p>What I didn’t realize at the time was that the Link Grammar Parser is fast enough that it may have been first worth implementing a much simpler and more naive form of mid-sentence parsing – rerunning the parser for each input action. So, as a tribute to my as-of-yet failure to improve upon the mid-sentence processing problem, I’ve implemented a small ruby script for the command line that repeatedly runs the link grammar parser every time a character is entered or deleted.</p>
+
+<p>To run this program on your own Mac or Linux terminal, you’ll need to install <code class="highlighter-rouge">ruby</code>, the command line tool <code class="highlighter-rouge">gem</code>, and the <code class="highlighter-rouge">linkparser</code> gem. On Debian/Ubuntu/derivatives, that should look like:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo apt-get install ruby gem
+
+sudo gem install linkparser
+</code></pre></div></div>
+<p>To use sudo, you will need to enter your root-level password.</p>
+
+<p>Then, you can use <code class="highlighter-rouge">git clone</code> from my <a href="">Github Repository</a> or copy the code below into a file, and run it like so, assuming the file’s name is <em>mid-sentence.rb</em>:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ruby mid-sentence.rb
+</code></pre></div></div>
+
+<p>Hit Escape to exit the program.</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="nb">require</span> <span class="s1">'io/console'</span>
+<span class="nb">require</span> <span class="s2">"linkparser"</span>
+
+
+<span class="n">dict</span> <span class="o">=</span> <span class="no">LinkParser</span><span class="o">::</span><span class="no">Dictionary</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span>
+  <span class="p">{</span><span class="ss">max_null_count: </span><span class="mi">0</span><span class="p">}</span>
+<span class="p">)</span>
+
+<span class="n">shell_string</span> <span class="o">=</span> <span class="s2">"linkparser&gt; "</span>
+<span class="n">user_string</span>  <span class="o">=</span> <span class="s2">""</span>
+<span class="n">num_linkages_to_show</span> <span class="o">=</span> <span class="mi">4</span>
+
+<span class="nb">puts</span> <span class="s2">"type Esc to exit program."</span>
+
+
+<span class="kp">loop</span> <span class="k">do</span>
+  <span class="nb">print</span> <span class="n">shell_string</span><span class="p">,</span> <span class="n">user_string</span>
+  
+  <span class="n">c</span> <span class="o">=</span> <span class="no">STDIN</span><span class="p">.</span><span class="nf">getch</span>
+
+  <span class="k">if</span> <span class="n">c</span> <span class="o">==</span> <span class="s2">"</span><span class="se">\u</span><span class="s2">007F"</span>
+    <span class="n">user_string</span> <span class="o">=</span> <span class="n">user_string</span><span class="p">[</span><span class="mi">0</span><span class="o">...-</span><span class="mi">1</span><span class="p">]</span>
+  <span class="k">elsif</span> <span class="n">c</span> <span class="o">==</span> <span class="s2">"</span><span class="se">\e</span><span class="s2">"</span>
+    <span class="nb">puts</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">Exiting program..."</span>
+    <span class="nb">exit</span>
+  <span class="k">else</span>
+    <span class="n">user_string</span> <span class="o">=</span> <span class="n">user_string</span> <span class="o">+</span> <span class="n">c</span>
+  <span class="k">end</span>
+  
+  <span class="k">if</span> <span class="o">!</span><span class="n">user_string</span><span class="p">.</span><span class="nf">empty?</span>    
+    <span class="n">parse</span> <span class="o">=</span> <span class="n">dict</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="n">user_string</span><span class="p">)</span>    
+    <span class="k">if</span> <span class="n">parse</span><span class="p">.</span><span class="nf">num_linkages_found</span><span class="p">.</span><span class="nf">positive?</span>
+      <span class="nb">print</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="s2">"*"</span> <span class="o">*</span> <span class="mi">70</span> <span class="o">+</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span>      
+      <span class="n">reversed</span> <span class="o">=</span> <span class="n">parse</span><span class="p">.</span><span class="nf">linkages</span><span class="p">.</span><span class="nf">reverse</span>
+      <span class="n">reversed</span><span class="p">[</span><span class="mi">0</span><span class="o">...</span><span class="n">num_linkages_to_show</span><span class="p">].</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">link</span><span class="o">|</span>
+        <span class="nb">print</span> <span class="n">link</span><span class="p">.</span><span class="nf">diagram</span><span class="p">(</span><span class="ss">max_width: </span><span class="mi">200</span><span class="p">)</span>
+      <span class="k">end</span>      
+      <span class="nb">print</span> <span class="s2">"</span><span class="si">#{</span><span class="n">parse</span><span class="p">.</span><span class="nf">num_linkages_found</span><span class="si">}</span><span class="s2"> linkages found. "</span>
+      <span class="nb">print</span> <span class="s2">"Best </span><span class="si">#{</span><span class="p">[</span><span class="n">num_linkages_to_show</span><span class="p">,</span> <span class="n">parse</span><span class="p">.</span><span class="nf">num_linkages_found</span><span class="p">].</span><span class="nf">min</span><span class="si">}</span><span class="s2"> "</span>
+      <span class="nb">print</span> <span class="s2">"shown in reverse, with the best matches on bottom."</span>
+    <span class="k">end</span>    
+  <span class="k">end</span>
+  
+  <span class="nb">print</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span>
+<span class="k">end</span></code></pre></figure>
+
+
+  </div>
+
+</article>
+
+        </div>
+      </div>
+
+      <footer class="site-footer">
+  <div class="wrapper">
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <div class="social-media-list">
+          
+            <a href="mailto:gtloria@protonmail.com">Email</a>
+          
+
+          
+            <a href="https://github.com/gavrieltal">Github</a>
+          
+
+          
+        </div>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <p>a tweak of <a href="http://masha.space/">Masha</a>'s theme on <a href="https://github.com/mashlo/captains-log">GitHub.</a> </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+    </div>
+  </body>
+
+</html>

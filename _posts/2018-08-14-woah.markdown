@@ -1,8 +1,0 @@
----
-layout: post
-date:   2018-08-14 17:00:00 -0400
----
-
-I'm going to try writing something.
-
-This paragraph is in Garamond. Keep reading for how to use the buttons to the left. Change your settings, and choose what section you want the font to apply to. Once you are pleased with the settings for that section you can click save. Your selections will remain as you look for another font for another section of this preview.
