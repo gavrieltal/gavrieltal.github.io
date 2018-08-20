@@ -5,8 +5,8 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 19 Aug 2018 21:46:44 -0400</pubDate>
-    <lastBuildDate>Sun, 19 Aug 2018 21:46:44 -0400</lastBuildDate>
+    <pubDate>Sun, 19 Aug 2018 22:11:54 -0400</pubDate>
+    <lastBuildDate>Sun, 19 Aug 2018 22:11:54 -0400</lastBuildDate>
     <generator>Jekyll v3.8.3</generator>
     
       <item>
@@ -32,7 +32,7 @@ sudo gem install linkparser
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;p&gt;To use sudo, you will need to enter your root-level password.&lt;/p&gt;
 
-&lt;p&gt;Then, you can use &lt;code class=&quot;highlighter-rouge&quot;&gt;git clone&lt;/code&gt; from my &lt;a href=&quot;&quot;&gt;Github Repository&lt;/a&gt; or copy the code below into a file, and run it like so, assuming the file’s name is &lt;em&gt;mid-sentence.rb&lt;/em&gt;:&lt;/p&gt;
+&lt;p&gt;Then, you can use &lt;code class=&quot;highlighter-rouge&quot;&gt;git clone&lt;/code&gt; from my &lt;a href=&quot;https://github.com/gavrieltal/mid-sentence&quot;&gt;Github Repository&lt;/a&gt; or copy the code below into a file, and run it like so, assuming the file’s name is &lt;em&gt;mid-sentence.rb&lt;/em&gt;:&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ruby mid-sentence.rb
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
@@ -87,8 +87,8 @@ sudo gem install linkparser
 
 </description>
         <pubDate>Tue, 14 Aug 2018 17:00:00 -0400</pubDate>
-        <link>http://localhost:4000/2018/08/14/link-grammar/</link>
-        <guid isPermaLink="true">http://localhost:4000/2018/08/14/link-grammar/</guid>
+        <link>http://localhost:4000/2018/08/14/mid-sentence/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/08/14/mid-sentence/</guid>
         
         
       </item>

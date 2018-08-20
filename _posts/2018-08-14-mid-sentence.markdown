@@ -26,7 +26,7 @@ sudo gem install linkparser
 ```
 To use sudo, you will need to enter your root-level password.
 
-Then, you can use `git clone` from my [Github Repository]() or copy the code below into a file, and run it like so, assuming the file's name is _mid-sentence.rb_:
+Then, you can use `git clone` from my [Github Repository](https://github.com/gavrieltal/mid-sentence) or copy the code below into a file, and run it like so, assuming the file's name is _mid-sentence.rb_:
 
 ```
 ruby mid-sentence.rb
