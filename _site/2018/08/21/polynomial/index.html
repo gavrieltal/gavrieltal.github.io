@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Simple Polynomial Breeding in Ruby</title>
+  <meta name="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:600,700|Garamond:400,700' rel='stylesheet' type='text/css'>
+  
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://localhost:4000/2018/08/21/polynomial/">
+  <link rel="alternate" type="application/rss+xml" title="Gavriel's Notebook" href="http://localhost:4000/feed.xml">
+</head>
+
+
+  <body>
+    <div class="site-wrap">
+      <header class="site-header">
+  <div class="wrapper">
+    <a class="site-title" href="http://localhost:4000/">Gavriel's Notebook</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+
+      </div>
+    </nav>
+  </div>
+</header>
+
+
+      <div class="page-content">
+        <div class="wrapper">
+          <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Simple Polynomial Breeding in Ruby</h1>
+    <p class="post-meta"><time datetime="2018-08-21T12:00:00-04:00" itemprop="datePublished">August 21, 2018</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p><img src="/assets/polynomial.gif" alt="Approximating f(x)=x^2 by Polynomial Breeding" /></p>
+
+<p>In the interest of learning more about inductive programming, I wanted to see how hard it would be to induce a polynomial function from no information other than a set of inputs and outputs. I am trying to imagine how, as an end-user uncomfortable with programming or mathematical abstraction, one might communicate an intended mathematical function or algorithm to a computer, and how effectively a computer might accommodate operating on effectively indeterminate information and communicate what it is doing back to the user in a digestible and intuitive manner. I’ve chosen to work with polynomial approximation because visualizing the computer’s computational process for the end-user is logistically simple, consisting of generating animations out of graphs of the polynomials. And I’ve started with an evolutionary algorithm, a design pattern meant to emulate basic aspects of Charles Darwin’s Theory of Evolution, simply because it sounds cute and cool, and it is conceptually simpler for less science-oriented people to understand.</p>
+
+<p>Essentially, each polynomial in one variable may be treated as a proverbial chromosome whose encoded data is an array of real numbers representing the polynomial’s coefficients ordered from lowest degree (constant) to highest. With a large enough population of pseudo-randomly generated chromosomes, we may apply a “fitness” or “cost” function to each chromosome in the population whereby cost is minimized when the chromosome best approximates the desired outputs given the example inputs. Then we may program in a “generational time-step function” where we drop the worst scorers and “breed” the top scorers on each iteration. Over enough generational steps, we should arrive at a local best-fit curve for the inputs and outputs. To best ensure that a global best-fit curve is found, it will also be necessary to introduce mutations into some chromosomes each evolutionary step. We can then graph each chromosome at each time step and build a movie for users to watch. Other forms of visual interaction, such as graphing the current state in real time rather than building movies starting from the beginning on-demand, isn’t too much harder to develop.</p>
+
+<p>To run</p>
+
+  </div>
+
+</article>
+
+        </div>
+      </div>
+
+      <footer class="site-footer">
+  <div class="wrapper">
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <div class="social-media-list">
+          
+            <a href="mailto:gtloria@protonmail.com">Email</a>
+          
+
+          
+            <a href="https://github.com/gavrieltal">Github</a>
+          
+
+          
+        </div>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <p>a tweak of <a href="http://masha.space/">Masha</a>'s theme on <a href="https://github.com/mashlo/captains-log">GitHub.</a> </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+    </div>
+  </body>
+
+</html>

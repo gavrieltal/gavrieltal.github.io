@@ -5,9 +5,26 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 19 Aug 2018 22:26:35 -0400</pubDate>
-    <lastBuildDate>Sun, 19 Aug 2018 22:26:35 -0400</lastBuildDate>
+    <pubDate>Tue, 21 Aug 2018 15:12:25 -0400</pubDate>
+    <lastBuildDate>Tue, 21 Aug 2018 15:12:25 -0400</lastBuildDate>
     <generator>Jekyll v3.8.3</generator>
+    
+      <item>
+        <title>Simple Polynomial Breeding in Ruby</title>
+        <description>&lt;p&gt;&lt;img src=&quot;/assets/polynomial.gif&quot; alt=&quot;Approximating f(x)=x^2 by Polynomial Breeding&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In the interest of learning more about inductive programming, I wanted to see how hard it would be to induce a polynomial function from no information other than a set of inputs and outputs. I am trying to imagine how, as an end-user uncomfortable with programming or mathematical abstraction, one might communicate an intended mathematical function or algorithm to a computer, and how effectively a computer might accommodate operating on effectively indeterminate information and communicate what it is doing back to the user in a digestible and intuitive manner. I’ve chosen to work with polynomial approximation because visualizing the computer’s computational process for the end-user is logistically simple, consisting of generating animations out of graphs of the polynomials. And I’ve started with an evolutionary algorithm, a design pattern meant to emulate basic aspects of Charles Darwin’s Theory of Evolution, simply because it sounds cute and cool, and it is conceptually simpler for less science-oriented people to understand.&lt;/p&gt;
+
+&lt;p&gt;Essentially, each polynomial in one variable may be treated as a proverbial chromosome whose encoded data is an array of real numbers representing the polynomial’s coefficients ordered from lowest degree (constant) to highest. With a large enough population of pseudo-randomly generated chromosomes, we may apply a “fitness” or “cost” function to each chromosome in the population whereby cost is minimized when the chromosome best approximates the desired outputs given the example inputs. Then we may program in a “generational time-step function” where we drop the worst scorers and “breed” the top scorers on each iteration. Over enough generational steps, we should arrive at a local best-fit curve for the inputs and outputs. To best ensure that a global best-fit curve is found, it will also be necessary to introduce mutations into some chromosomes each evolutionary step. We can then graph each chromosome at each time step and build a movie for users to watch. Other forms of visual interaction, such as graphing the current state in real time rather than building movies starting from the beginning on-demand, isn’t too much harder to develop.&lt;/p&gt;
+
+&lt;p&gt;To run&lt;/p&gt;
+</description>
+        <pubDate>Tue, 21 Aug 2018 12:00:00 -0400</pubDate>
+        <link>http://localhost:4000/2018/08/21/polynomial/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/08/21/polynomial/</guid>
+        
+        
+      </item>
     
       <item>
         <title>Naive Mid-Sentence Processing</title>
@@ -15,13 +32,13 @@
 
 &lt;p&gt;The first program I ever tried to create was an original process for making sense of a sentence of natural language as it was being spoken or written. With just a year of computer science classes under my belt and some experience tutoring the same material, this project was ambitious enough that I was probably doomed to fail. However, I would learn a lot in the process, not only about programming and working in a group but also about what kinds of projects I would like to work on going forward.&lt;/p&gt;
 
-&lt;p&gt;The idea for the project came from the &lt;a href=&quot;https://opencog.org/&quot;&gt;OpenCog Foundation&lt;/a&gt;, who graciously offered to mentor me under the auspices of Google’s Summer of Code 2015. As they pointed out, there had already existed algorithms for producing syntactic parses of complete sentences, such as the &lt;a href=&quot;https://www.abisource.com/projects/link-grammar/&quot;&gt;Link Grammar Parser&lt;/a&gt;. What makes the Link Grammar Parser attractive to OpenCog, as Dr. Ben Goertzel once told me over Slack, is that the words have direct relations of dependency or hierarchy with one another, resulting in simpler parses (fewer nodes). In formal linguistic terminology, it is a syntax parser based on &lt;em&gt;dependency grammar&lt;/em&gt;, rather than the &lt;em&gt;phrase structure grammar&lt;/em&gt; that most K-12 grammar textbooks and linguists such as Noam Chomsky primarily worked with, wherein groupings of words serving a particular purpose in the sentence may also count as nodes in the parse.&lt;/p&gt;
+&lt;p&gt;The idea for the project came from the &lt;a href=&quot;https://opencog.org/&quot;&gt;OpenCog Foundation&lt;/a&gt;, who graciously offered to mentor me under the auspices of Google’s Summer of Code 2015. As they pointed out, there had already existed algorithms for producing syntactic parses of complete sentences, such as the &lt;a href=&quot;https://www.abisource.com/projects/link-grammar/&quot;&gt;Link Grammar Parser&lt;/a&gt;. What makes the Link Grammar Parser attractive to OpenCog, as one of its leaders Dr. Ben Goertzel once told me over Slack, is that the words have direct relations of dependency or hierarchy with one another, resulting in simpler parses (fewer nodes). In formal linguistic terminology, it is a syntax parser based on &lt;em&gt;dependency grammar&lt;/em&gt;, rather than the &lt;em&gt;phrase structure grammar&lt;/em&gt; that most K-12 grammar textbooks and linguists like Noam Chomsky discuss, wherein not only individual words but also groupings of words serving a more general purpose in the sentence may count as nodes in the parse.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/assets/Thistreeisillustratingtherelation(PSG).png&quot; alt=&quot;An image showing the difference between dependency and phrase structure grammar parses of a sentence.&quot; title=&quot;By Tjo3ya - Own work, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=17527158&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;To see it work, you can parse a complete sentence &lt;a href=&quot;http://www.link.cs.cmu.edu/link/submit-sentence-4.html&quot;&gt;here&lt;/a&gt;. To understand what the relations in a given linkage mean, there is also a &lt;a href=&quot;https://www.abisource.com/projects/link-grammar/dict/index.html&quot;&gt;reference dictionary&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;In the hopes of developing an algorithm to predict syntactic parses mid-sentence on the basis of semantics, I spent the first half of my summer reading somewhat deeply into &lt;a href=&quot;http://dickhudson.com/word-grammar/&quot;&gt;Word Grammar&lt;/a&gt;, a linguistic system describing on a theoretical level the relationships of many kinds of linguistic terms with each other (including words, spellings, pronunciations, syntactic links, and semantic concepts). I also looked into tweaking the primary algorithm to prioritize checking linkages within a limited portion of a sentence, such as a phrase.&lt;/p&gt;
+&lt;p&gt;In the hopes of developing an algorithm to predict syntactic parses mid-sentence on the basis of semantics as a real human brain does, I spent the first half of my summer reading somewhat deeply into &lt;a href=&quot;http://dickhudson.com/word-grammar/&quot;&gt;Word Grammar&lt;/a&gt;, a linguistic system describing on a theoretical level the relationships of many kinds of linguistic terms with each other (including words, spellings, pronunciations, syntactic links, and semantic concepts). I also looked into tweaking the primary algorithm to prioritize checking linkages within a limited portion of a sentence, such as a phrase.&lt;/p&gt;
 
 &lt;p&gt;What I didn’t realize at the time was that the Link Grammar Parser is fast enough that it may have been first worth implementing a much simpler and more naive form of mid-sentence parsing – rerunning the parser for each input action. So, as a tribute to my as-of-yet failure to improve upon the mid-sentence processing problem, I’ve implemented a small ruby script for the command line that repeatedly runs the link grammar parser every time a character is entered or deleted.&lt;/p&gt;
 
