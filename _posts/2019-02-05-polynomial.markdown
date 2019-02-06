@@ -12,7 +12,7 @@ Essentially, each polynomial in one variable may be treated as a proverbial chro
 
 I will spend the bulk of the rest of this post building up my example program as a tutorial. For reference and quick learners, I've included the final code (roughly ~250 lines) at the end of this post as well as in my Github account.
 
-![A tree of life](/assets/treeoflife.gif)
+![A tree of life](/assets/treeoflife.png)
 
 If we are to visualize deriving a best-fit polynomial through a genetic method, we will imagine that each polynomial expression is like a basic living organism whose genetic data is precisely the values of coefficients for each term. We will be responsible for building and observing a population of these polynomial expressions to see whose genetic material is the "best fit" for satisfying our example input and output values. The way we will determine "best fit" is by use of a cost function, whose primary purpose is to quantify how far off a polynomial function's outputs are from the initial output examples we provided.
 
@@ -20,7 +20,7 @@ Since this has the same conceptual structure as a physical simulation, this seem
 
 The primary portion of the code will consist of two classes. The first is a class defining a polynomial expression, which I will call `Expr`, and the second is a class for containing and manipulating all of the polynomial expressions, which I will call `Population`.
 
-Let's start with the `Expr` class. An Expr consists of nothing more than an array of numbers, indicating the coefficients of the 0th degree, 1st degree, 2nd degree, and so on. So when we initialize an Expr, we should set its `:terms` equal to an array of numbers based on requirements suggested by the user. We'll also throw in a function to convert an Expr to a string with an eye towards compatibility with Python's Sympy library. In a custom `to_s()` method, we will print each term in Expr as `"{terms[i]}*x**i}" for each available index in `:terms`, and concatenate each of these terms with a simple `"+"`.
+Let's start with the `Expr` class. An Expr consists of nothing more than an array of numbers, indicating the coefficients of the 0th degree, 1st degree, 2nd degree, and so on. So when we initialize an Expr, we should set its `:terms` equal to an array of numbers based on requirements suggested by the user. We'll also throw in a function to convert an Expr to a string with an eye towards compatibility with Python's Sympy library. In a custom `to_s()` method, we will print each term in Expr as `"{terms[i]}*x**i}" for each available index in `:terms`, and concatenate each of these terms with a simple `+`.
 
 {% highlight ruby %}
 # gene.rb
@@ -42,7 +42,7 @@ end
 
 If we look at this program in a REPL (`irb` or `pry`), we can see what our program does so far:
 
-```
+{% highlight ruby %}
   $ pry
 [1] pry(main)> load "gene.rb"
 => true
@@ -50,14 +50,14 @@ If we look at this program in a REPL (`irb` or `pry`), we can see what our progr
 => #<Expr:0x000055db65166e80 @terms=[5, 6, 7]>
 [3] pry(main)> e.to_s
 => "5*x**0+6*x**1+7*x**2"  <==  # that's 7x^2 + 6x + 5
-```
+{% endhighlight %}
 
 As an aside, the class definition for Expr given here isn't always going to be the best. For example, just as with storage methods for matrices, using arrays so explicitly makes more sense for dense polynomials rather than sparse polynomials. It wouldn't make fantastic sense to represent x^1000000 with an array of a million zeroes followed by a single 1. However, to limit the space of polynomials for the machine to infer from, we will stick to working with highly dense polynomials, understood for now simply as polynomials where representation with a single array makes sense.
 
 It's great that we can specify terms exactly upon initialization with the current code, but this will be less useful when trying to come up with, say, 100 different expressions with which to start the genetic pool. So let us also include a method for initializing an Expr based on generating random numbers. Not just any random number will be helpful though -- it will help tremendously to limit the search space for our best fit curve by limiting the absolute value of each coefficient. To accommodate both inputs, we may initialize an Expr either by directly specifying coefficients in an array or specifying a maximum degree and a maximum (absolute value) coefficient in a hash. I'll also throw in a random sign generator so we may easily generate positive and negative coefficients.
 
 
-```
+{% highlight ruby %}
 class Expr
   attr_reader :terms
   
@@ -83,13 +83,13 @@ class Expr
   def random_sign() rand(2).zero? ? 1 : -1 end
   
 end
-```
+{% endhighlight %}
 
 The last functionality we may want to introduce to our Expr class representing a polynomial entity is how it may "mate" with another polynomial. In this example, we will use the *crossover* method, in which a new polynomial is generated using a random number of terms from the first polynomial and (polynomial length - random) number of terms from the second polynomial. We can also get a second Expr by smushing together the unused terms from the two parent polynomials. Additionally, to avoid becoming stuck in a local maximum as we approximate the best fit polynomial, we will also introduce a small probability indicating the likelihood that any one term in the result Expr gets a totally new value -- a mutation.
 
 Let's go ahead and add a mating function to the Expr class:
 
-```
+{% highlight ruby %}
   def mate_with expr, options = {}
     mutate_prob = options[:mutate_p] || 0.02
     abs_max     = options[:abs_max]  ||   -1
@@ -111,11 +111,11 @@ Let's go ahead and add a mating function to the Expr class:
     
     return [Expr.new(a), Expr.new(b)]
   end
-```
+{% endhighlight %}
 
 Next, I will focus on writing a new class, Population, which will be a container for our total environment of Exprs as well as all the ways in which we might want to manipulate, restrict, or graphically render them. It will take pairs of (input, output), here represented as two arrays of equal length, the first containing inputs and the second containing their respective outputs. It will also take a series of parameters, which have default options. The number of exprs in the Population during a generation may be given; so may a maximum degree of polynomials to be considered for best fit, as well as a probability of mutation when mating Exprs. Furthermore, we can also specify a cost function to define precisely how far off each Expr in a Population is from a perfect fit. The default cost function is to take a square of the difference between the resulting output and the expected output. There are other possible options as well, but they related to graphical rendering of the Population, which we will talk about later.
 
-```
+{% highlight ruby %}
 class Population
   
   attr_accessor :exprs, :inputs, :outputs, :cost_func, :bound_x, :bound_y,
@@ -147,11 +147,11 @@ class Population
   end
 end
 
-```
+{% endhighlight %}
 
 First, we'll need a function that computes the best fit scores of the current generation. For each Expr, we will take each input value, plug it into the Expr, and use the cost function to compute how far off the expected output is from the calculated result. We will call an Expr's score the sum of these differences; a lower score is therefore better.
 
-```
+{% highlight ruby %}
   def scores
     if @scores.nil?
       @scores = @exprs.map {
@@ -163,11 +163,11 @@ First, we'll need a function that computes the best fit scores of the current ge
       @scores
     end
   end
-```
+{% endhighlight %}
 
 Next, we'll need to specify a process for mutating the Exprs in our Population. We already defined a method for mating two Exprs. On the one hand, we want to mate Exprs so we can try new possible best fit polynomials. On the other hand, we don't necessarily want to throw all of the current results away, because the current Exprs may be better fits than their children. Here's a possible compromise: Sort the Exprs by score, keep the two best scoring Exprs, totally delete (kill off) the worst two scoring Exprs and replace them with the children of the two best scoring Exprs, and simply replace the rest of the Exprs with their own children. This is a code implementation:
 
-```
+{% highlight ruby %}
   def mate_exprs # crossover_method
     # beforehand, calculate scores
     scores()
@@ -225,21 +225,20 @@ Next, we'll need to specify a process for mutating the Exprs in our Population. 
     @frame_num += 1
     @scores     = nil
   end
-```
+{% endhighlight %}
 
 The function :score_pairs creates an array, sorted by score, of pairs (polynomial, index in @exprs). The function :next_generation drops the previous scoring information and prepares the generation for the next iteration of graphical rendering, which I will talk about after mentioning one more non-graphical utility: to get the current generation's best fit function, just call :best_fit on the current Population:
 
-```
+{% highlight ruby %}
   def best_fit    # get Expr with lowest score
     best_pair = score_pairs()[0]
     @exprs[best_pair[:index]].to_s
   end
-  
-```
+{% endhighlight %}
 
 Now, to graphically render a generation, we will save the generation's Exprs to a file using Expr's :to_s function, and then run a Python script using Sympy and Matplotlib using this file to draw every Expr on the same graph.
 
-```
+{% highlight ruby %}
   def graph_exprs(savefile = "exprs.txt")
     if @graphed
       puts("this generation has already been graphed")
@@ -257,11 +256,11 @@ Now, to graphically render a generation, we will save the generation's Exprs to 
       @graphed = true
     end
   end
-```
+{% endhighlight %}
 
 The graphing script, written in Python, takes a savefile (where the Exprs are stored), an ID which serves as a sufficiently unique name for this population so that animations do not mix and match frames from different populations, a frame number to signify where the frame would go in an animation which is equal to how many generations have passed up until now, and an x and y bound for the graph. To use this graphing facility, it is necessary to have Python installed. One can get use ` pip install matplotlib sympy ` to obtain these packages. If running Ubuntu, it may also help to make sure python-tk is installed with ` sudo apt install python-tk `. Here's the python script:
 
-```
+{% highlight python %}
 from sympy import symbols
 from sympy.plotting import plot
 import sys
@@ -286,11 +285,11 @@ with open(sys.argv[1]) as f:
     exec("plot(" + ", ".join(exprs) + ", show = False, xlim = (-" +
              bound_x + ", +" + bound_x + "), ylim = (-" + bound_y + ", +" +
              bound_y + ")).save('" + hash_name + "_" + frame_num + "')")
-```
+{% endhighlight %}
 
 To consolidate the graphs into a movie like at the top of this post, one can optionally specify frames per second, fidelity, and whether one wants the pictures deleted afterward, and run :animate. This function effectively runs a bash shell command, ` ffmpeg ` (which can be installed with ` sudo apt install ffmpeg ` if it hasn't been already).
 
-```
+{% highlight ruby %}
   
   def animate options = {}
     frames_per_sec = options[:frames_per_sec] ||  4
@@ -306,11 +305,11 @@ To consolidate the graphs into a movie like at the top of this post, one can opt
     
     puts("your video is saved as ./#{@id}.mp4!")
   end
-```
+{% endhighlight %}
 
 With the backbone of the program in place, we may start using the program:
 
-```
+{% highlight ruby %}
 gavriel@stockholm:~/Desktop/ruby/toys/polynomial$ pry
 [1] pry(main)> load "gene.rb"
 => true
@@ -371,13 +370,13 @@ gavriel@stockholm:~/Desktop/ruby/toys/polynomial$ pry
 => [14, 14, 30, 14, 14, 14, 14, 14, 14, 14]
 [8] pry(main)> p.best_fit
 => "-1*x**0+2*x**1+0*x**2+0*x**3"
-```
+{% endhighlight %}
 
 In this instance, the program has not successfully identified a polynomial that reduces cost to 0 (e.g. f(x) = x). However, it has come somewhat close, arriving at f(x) = 2x - 1. Of course, this program is pretty rudimentary and limited. However, it is also not a terrible result when considering the polynomials that were generated to begin with.
 
 To produce an animation, one can run commands in a sequence like so:
 
-```
+{% highlight ruby %}
 gavriel@stockholm:~/Desktop/ruby/toys/polynomial$ pry
 [1] pry(main)> load "gene.rb"
 => true
@@ -427,14 +426,14 @@ ffmpeg version 3.4.4-0ubuntu0.18.04.1 Copyright (c) 2000-2018 the FFmpeg develop
   [....]
 your video is saved as ./169501207688272464.mp4!
 => nil
-```
+{% endhighlight %}
 
 To speed up this process, I have included a utility :quick_movie, which takes a Population and makes a movie.
 
-```
+{% highlight ruby %}
 [1] pry(main)> load "gene.rb"
 => true
 [2] pry(main)> Population.new((1...5).to_a, (1...5).to_a).quick_movie
 frames to produce: 16...
-```
+{% endhighlight %}
 
