@@ -20,7 +20,7 @@ Since this has the same conceptual structure as a physical simulation, this seem
 
 The primary portion of the code will consist of two classes. The first is a class defining a polynomial expression, which I will call `Expr`, and the second is a class for containing and manipulating all of the polynomial expressions, which I will call `Population`.
 
-Let's start with the `Expr` class. An Expr consists of nothing more than an array of numbers, indicating the coefficients of the 0th degree, 1st degree, 2nd degree, and so on. So when we initialize an Expr, we should set its `:terms` equal to an array of numbers based on requirements suggested by the user. We'll also throw in a function to convert an Expr to a string with an eye towards compatibility with Python's Sympy library. In a custom `to_s()` method, we will print each term in Expr as `"{terms[i]}*x**i}" for each available index in `:terms`, and concatenate each of these terms with a simple `+`.
+Let's start with the `Expr` class. An Expr consists of nothing more than an array of numbers, indicating the coefficients of the 0th degree, 1st degree, 2nd degree, and so on. So when we initialize an Expr, we should set its `:terms` equal to an array of numbers based on requirements suggested by the user. We'll also throw in a function to convert an Expr to a string with an eye towards compatibility with Python's Sympy library. In a custom `to_s()` method, we will print each term in Expr as `"{terms[i]}*x**i}"` for each available index in `:terms`, and concatenate each of these terms with a simple `+`.
 
 {% highlight ruby %}
 # gene.rb
@@ -80,8 +80,7 @@ class Expr
 
   private
 
-  def random_sign() rand(2).zero? ? 1 : -1 end
-  
+  def random_sign() rand(2).zero? ? 1 : -1 end  
 end
 {% endhighlight %}
 
@@ -117,7 +116,6 @@ Next, I will focus on writing a new class, Population, which will be a container
 
 {% highlight ruby %}
 class Population
-  
   attr_accessor :exprs, :inputs, :outputs, :cost_func, :bound_x, :bound_y,
                 :mutate_p
   attr_reader   :scores, :graphed, :frame_num, :id, :abs_max
