@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Simple Polynomial Breeding in Ruby"
-date:   2018-02-05 12:00:00 -0400
+date:   2019-02-05 12:00:00 -0400
 ---
 
 ![Approximating f(x)=x^2 by Polynomial Breeding](/assets/polynomial.gif)
