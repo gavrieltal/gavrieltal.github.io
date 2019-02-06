@@ -22,7 +22,6 @@ The primary portion of the code will consist of two classes. The first is a clas
 
 Let's start with the `Expr` class. An Expr consists of nothing more than an array of numbers, indicating the coefficients of the 0th degree, 1st degree, 2nd degree, and so on. So when we initialize an Expr, we should set its `:terms` equal to an array of numbers based on requirements suggested by the user. We'll also throw in a function to convert an Expr to a string with an eye towards compatibility with Python's Sympy library. In a custom `to_s()` method, we will print each term in Expr as `"{terms[i]}*x**i}" for each available index in `:terms`, and concatenate each of these terms with a simple `"+"`.
 
-```
 {% highlight ruby %}
 # gene.rb
 
@@ -40,7 +39,6 @@ class Expr
   end
 end
 {% endhighlight %}
-```
 
 If we look at this program in a REPL (`irb` or `pry`), we can see what our program does so far:
 
