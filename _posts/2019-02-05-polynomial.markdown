@@ -12,7 +12,7 @@ Essentially, each polynomial in one variable may be treated as a proverbial chro
 
 I will spend the bulk of the rest of this post building up my example program as a tutorial. For reference and quick learners, I've included the final code (roughly ~250 lines) at the end of this post as well as in my Github account.
 
-![A tree of life](/assets/treeoflife.png)
+![A tree of life](/assets/treeoflife.png "Ivica Letunic: Iletunic. Retraced by Mariana Ruiz Villarreal: LadyofHats [Public domain], via Wikimedia Commons")
 
 If we are to visualize deriving a best-fit polynomial through a genetic method, we will imagine that each polynomial expression is like a basic living organism whose genetic data is precisely the values of coefficients for each term. We will be responsible for building and observing a population of these polynomial expressions to see whose genetic material is the "best fit" for satisfying our example input and output values. The way we will determine "best fit" is by use of a cost function, whose primary purpose is to quantify how far off a polynomial function's outputs are from the initial output examples we provided.
 
@@ -20,7 +20,7 @@ Since this has the same conceptual structure as a physical simulation, this seem
 
 The primary portion of the code will consist of two classes. The first is a class defining a polynomial expression, which I will call `Expr`, and the second is a class for containing and manipulating all of the polynomial expressions, which I will call `Population`.
 
-Let's start with the `Expr` class. An Expr consists of nothing more than an array of numbers, indicating the coefficients of the 0th degree, 1st degree, 2nd degree, and so on. So when we initialize an Expr, we should set its `:terms` equal to an array of numbers based on requirements suggested by the user. We'll also throw in a function to convert an Expr to a string with an eye towards compatibility with Python's Sympy library. In a custom `to_s()` method, we will print each term in Expr as `"{terms[i]}*x**i}"` for each available index in `:terms`, and concatenate each of these terms with a simple `+`.
+Let's start with the `Expr` class. An Expr consists of nothing more than an array of numbers, indicating the coefficients of the 0th degree, 1st degree, 2nd degree, and so on. So when we initialize an Expr, we should set its `:terms` equal to an array of numbers based on requirements suggested by the user. We'll also throw in a function to convert an Expr to a string with an eye towards compatibility with Python's Sympy library. In a custom `:to_s()` method, we will print each term in Expr as `"{terms[i]}*x**i}"` for each available index in `:terms`, and concatenate each of these terms with a simple `"+"`.
 
 {% highlight ruby %}
 # gene.rb
@@ -112,7 +112,7 @@ Let's go ahead and add a mating function to the Expr class:
   end
 {% endhighlight %}
 
-Next, I will focus on writing a new class, Population, which will be a container for our total environment of Exprs as well as all the ways in which we might want to manipulate, restrict, or graphically render them. It will take pairs of (input, output), here represented as two arrays of equal length, the first containing inputs and the second containing their respective outputs. It will also take a series of parameters, which have default options. The number of exprs in the Population during a generation may be given; so may a maximum degree of polynomials to be considered for best fit, as well as a probability of mutation when mating Exprs. Furthermore, we can also specify a cost function to define precisely how far off each Expr in a Population is from a perfect fit. The default cost function is to take a square of the difference between the resulting output and the expected output. There are other possible options as well, but they related to graphical rendering of the Population, which we will talk about later.
+Next, I will focus on writing a new class, `Population`, which will be a container for our total environment of Exprs as well as all the ways in which we might want to manipulate, restrict, or graphically render them. It will take pairs of (input, output), here represented as two arrays of equal length, the first containing inputs and the second containing their respective outputs. It will also take a series of parameters, which have default options. The number of exprs in the Population during a generation may be given; so may a maximum degree of polynomials to be considered for best fit, as well as a probability of mutation when mating Exprs. Furthermore, we can also specify a cost function to define precisely how far off each Expr in a Population is from a perfect fit. The default cost function is to take a square of the difference between the resulting output and the expected output. There are other possible options as well, but they related to graphical rendering of the Population, which we will talk about later.
 
 {% highlight ruby %}
 class Population
@@ -225,7 +225,7 @@ Next, we'll need to specify a process for mutating the Exprs in our Population. 
   end
 {% endhighlight %}
 
-The function :score_pairs creates an array, sorted by score, of pairs (polynomial, index in @exprs). The function :next_generation drops the previous scoring information and prepares the generation for the next iteration of graphical rendering, which I will talk about after mentioning one more non-graphical utility: to get the current generation's best fit function, just call :best_fit on the current Population:
+The function `:score_pairs` creates an array, sorted by score, of pairs (polynomial, index in `@exprs`). The function `:next_generation` drops the previous scoring information and prepares the generation for the next iteration of graphical rendering, which I will talk about after mentioning one more non-graphical utility: to get the current generation's best fit function, just call `:best_fit` on the current Population:
 
 {% highlight ruby %}
   def best_fit    # get Expr with lowest score
@@ -234,7 +234,7 @@ The function :score_pairs creates an array, sorted by score, of pairs (polynomia
   end
 {% endhighlight %}
 
-Now, to graphically render a generation, we will save the generation's Exprs to a file using Expr's :to_s function, and then run a Python script using Sympy and Matplotlib using this file to draw every Expr on the same graph.
+Now, to graphically render a generation, we will save the generation's Exprs to a file using Expr's `:to_s` function, and then run a Python script using Sympy and Matplotlib using this file to draw every Expr on the same graph.
 
 {% highlight ruby %}
   def graph_exprs(savefile = "exprs.txt")
@@ -256,7 +256,7 @@ Now, to graphically render a generation, we will save the generation's Exprs to 
   end
 {% endhighlight %}
 
-The graphing script, written in Python, takes a savefile (where the Exprs are stored), an ID which serves as a sufficiently unique name for this population so that animations do not mix and match frames from different populations, a frame number to signify where the frame would go in an animation which is equal to how many generations have passed up until now, and an x and y bound for the graph. To use this graphing facility, it is necessary to have Python installed. One can get use ` pip install matplotlib sympy ` to obtain these packages. If running Ubuntu, it may also help to make sure python-tk is installed with ` sudo apt install python-tk `. Here's the python script:
+The graphing script, written in Python, takes a savefile (where the Exprs are stored), an ID which serves as a sufficiently unique name for this population so that animations do not mix and match frames from different populations, a frame number to signify where the frame would go in an animation which is equal to how many generations have passed up until now, and an x and y bound for the graph. To use this graphing facility, it is necessary to have Python installed. One can get use `pip install matplotlib sympy` to obtain these packages. If running Ubuntu, it may also help to make sure python-tk is installed with `sudo apt install python-tk`. Here's the python script:
 
 {% highlight python %}
 from sympy import symbols
@@ -285,7 +285,7 @@ with open(sys.argv[1]) as f:
              bound_y + ")).save('" + hash_name + "_" + frame_num + "')")
 {% endhighlight %}
 
-To consolidate the graphs into a movie like at the top of this post, one can optionally specify frames per second, fidelity, and whether one wants the pictures deleted afterward, and run :animate. This function effectively runs a bash shell command, ` ffmpeg ` (which can be installed with ` sudo apt install ffmpeg ` if it hasn't been already).
+To consolidate the graphs into a movie like at the top of this post, one can optionally specify frames per second, fidelity, and whether one wants the pictures deleted afterward, and run :animate. This function effectively runs a bash shell command, `ffmpeg` (which can be installed with `sudo apt install ffmpeg` if it hasn't been already).
 
 {% highlight ruby %}
   
