@@ -435,3 +435,4 @@ To speed up this process, I have included a utility :quick_movie, which takes a 
 frames to produce: 16...
 {% endhighlight %}
 
+The code on Github has a few additional utilities, such as allowing "pulsing" of the Population by adding Exprs or input-output pairs manually.
